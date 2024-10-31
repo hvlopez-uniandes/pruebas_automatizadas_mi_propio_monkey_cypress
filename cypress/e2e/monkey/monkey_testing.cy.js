@@ -1,3 +1,9 @@
+import seedrandom from 'seedrandom';
+const rng = seedrandom('prueba-automatizada-semana-4-bono'); // Seed for reproducibility
+function getRandomInt(min, max) {
+    return min + Math.floor(rng() * (max - min));
+}
+
 const eventStrategies = {
     clickLink: () => {
         cy.get('a').then($links => {
@@ -20,7 +26,7 @@ const eventStrategies = {
             const randomSelect = $selects.get(getRandomInt(0, $selects.length));
             if (!Cypress.dom.isHidden(randomSelect)) {
                 const optionsLength = randomSelect.options.length;
-                cy.wrap(randomSelect).select(getRandomInt(0, optionsLength - 1));
+                cy.wrap(randomSelect).select(getRandomInt(0, optionsLength));
             }
         });
     },
@@ -33,12 +39,6 @@ const eventStrategies = {
         });
     }
 };
-
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min;
-}
 
 function randomEvent(monkeysLeft) {
     if (monkeysLeft > 0) {
