@@ -51,7 +51,6 @@ function randomEvent(monkeysLeft) {
 
         randomEvent(monkeysLeft - 1);
     }
-    return;
 }
 
 describe('Los estudiantes under monkeys', function() {
