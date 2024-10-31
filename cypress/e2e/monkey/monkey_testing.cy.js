@@ -2,7 +2,7 @@ const seedrandom = require('seedrandom');
 const { faker } = require('@faker-js/faker');
 
 const rng = seedrandom('prueba-automatizada-semana-4-bono');
-const modalEventLimit = 25; 
+const modalEventLimit = 25;
 let eventsInModal = 0;
 
 function getRandomInt(min, max) {
@@ -29,10 +29,10 @@ function closeModalIfLimitReached() {
     if ($dialogModal.length > 0 && eventsInModal >= modalEventLimit) {
         console.log("Se alcanzó el límite de eventos en el modal, cerrándolo.");
         cy.get('body').click('topRight');
-        eventsInModal = 0; 
+        eventsInModal = 0;
     } else if ($errorModal.length > 0) {
         console.log("Modal de error detectado, cerrándolo.");
-        cy.get('button').contains('OK').click({ force: true }); 
+        cy.get('button').contains('OK').click({ force: true });
     }
 }
 
@@ -70,13 +70,22 @@ const eventStrategies = {
         }
     },
     selectCombo: (inModal) => {
-        console.log("Evento: Seleccionar una opción de un combo");
-        const $selects = inModal ? Cypress.$('div[role="dialog"] select') : Cypress.$('select');
-        if ($selects.length > 0) {
-            const visibleSelect = selectVisibleElement($selects);
-            if (visibleSelect) {
-                const optionsLength = visibleSelect.options.length;
-                cy.wrap(visibleSelect).select(getRandomInt(0, optionsLength));
+        console.log("Evento: Interactuar con el elemento <ul> con clase 'nav navbar-nav' o selects");
+
+        if (!inModal) {
+            const $navUl = Cypress.$('ul.nav.navbar-nav');
+            if ($navUl.length > 0) {
+                cy.wrap($navUl).realClick();
+            }
+        }
+        if (inModal) {
+            const $selectInModal = Cypress.$('div[role="dialog"] select');
+            if ($selectInModal.length > 0) {
+                const visibleSelect = selectVisibleElement($selectInModal);
+                if (visibleSelect) {
+                    const optionsLength = visibleSelect.options.length;
+                    cy.wrap(visibleSelect).select(getRandomInt(0, optionsLength));
+                }
             }
         }
     },
@@ -99,7 +108,7 @@ function randomEvent(monkeysLeft) {
         if (inModal) {
             if (eventsInModal >= modalEventLimit) {
                 closeModalIfLimitReached();
-                randomEvent(monkeysLeft); 
+                randomEvent(monkeysLeft);
                 return;
             } else {
                 eventsInModal++;
