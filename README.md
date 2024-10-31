@@ -3,8 +3,7 @@
 Este proyecto realiza pruebas de monkey testing en el sitio web [Los Estudiantes](https://losestudiantes.com). Utiliza Cypress para automatizar eventos aleatorios, simulando la interacción aleatoria de un usuario con el sitio. La función `randomEvent()` ejecuta eventos como hacer clic en enlaces, llenar campos de texto, seleccionar opciones de un combo, y hacer clic en botones en la página, todo de manera recursiva y aleatoria hasta completar el número especificado de eventos.
 
 ## Enunciado
-
-1.3 Su turno  
+### Su turno  
 Ahora usted deberá crear una nueva función `randomEvent()` que tome como parámetro la cantidad de eventos que se desean lanzar secuencialmente, al igual que el método `randomClick`, y debe:
 
 - Seleccionar un evento al azar entre estos:
@@ -51,11 +50,11 @@ La función `randomEvent()` fue diseñada para cumplir con todos los requisitos 
 
 1. Clona el repositorio en tu máquina local.
     ```bash
-    git clone git@github.com:hvlopez-uniandes/pruebas_automatizadas_mi_propio_monkey_cypress.git
+    git clone <url_del_repositorio>
     ```
 2. Navega a la carpeta del proyecto.
     ```bash
-    cd pruebas_automatizadas_mi_propio_monkey_cypress
+    cd nombre_del_proyecto
     ```
 3. Instala las dependencias del proyecto.
     ```bash
@@ -65,6 +64,7 @@ La función `randomEvent()` fue diseñada para cumplir con todos los requisitos 
 ## Ejecución de las Pruebas
 
 Para ejecutar las pruebas de monkey testing en Los Estudiantes, sigue los pasos a continuación.
+
 
 ### Modo Interactivo
 
@@ -90,4 +90,15 @@ Ejecuta el siguiente comando para ejecutar Cypress en modo manul:
 ```bash
 npx cypress run --spec "cypress/e2e/monkey/monkey_testing.cy.js" --headed
 ```
+### Combinar los Resultados (opcional)
 
+Para combinar múltiples archivos de resultados en un solo reporte:
+
+1. Combina todos los archivos JSON en un archivo combinado:
+```bash
+   npx mochawesome-merge results/*.json > results/combined-report.json
+```
+2. Genera un reporte HTML único a partir del archivo combinado:
+```bash
+npx marge results/combined-report.json --reportDir results
+```
