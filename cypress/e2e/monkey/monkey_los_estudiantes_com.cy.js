@@ -1,6 +1,6 @@
 describe('Los estudiantes under monkeys', function() {
     it('visits los estudiantes and survives monkeys', function() {
-        cy.visit('https://losestudiantes.co');
+        cy.visit('https://losestudiantes.com');
         cy.wait(1000);
         randomClick(10);
     })
