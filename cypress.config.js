@@ -2,6 +2,8 @@ const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   e2e: {
+    video: true,
+    videosFolder: 'results/videos',
     reporter: 'mochawesome',
     reporterOptions: {
       reportDir: 'results',
