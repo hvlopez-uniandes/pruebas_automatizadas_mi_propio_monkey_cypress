@@ -51,11 +51,11 @@ La función `randomEvent()` fue diseñada para cumplir con todos los requisitos 
 
 1. Clona el repositorio en tu máquina local.
     ```bash
-    git clone <url_del_repositorio>
+    git clone git@github.com:hvlopez-uniandes/pruebas_automatizadas_mi_propio_monkey_cypress.git
     ```
 2. Navega a la carpeta del proyecto.
     ```bash
-    cd nombre_del_proyecto
+    cd pruebas_automatizadas_mi_propio_monkey_cypress
     ```
 3. Instala las dependencias del proyecto.
     ```bash
