@@ -74,7 +74,7 @@ Ejecuta el siguiente comando para abrir Cypress en modo interactivo:
 npx cypress open
 ```
 
-### Modo Manual
+### Modo Manual HeadLess
 
 Ejecuta el siguiente comando para ejecutar Cypress en modo manul:
 
@@ -82,3 +82,12 @@ Ejecuta el siguiente comando para ejecutar Cypress en modo manul:
 npx cypress run --spec "cypress/e2e/monkey/monkey_testing.cy.js"
 
 ```
+
+### Modo Manual Head(Ver ejecucion)
+
+Ejecuta el siguiente comando para ejecutar Cypress en modo manul:
+
+```bash
+npx cypress run --spec "cypress/e2e/monkey/monkey_testing.cy.js" --headed
+```
+
