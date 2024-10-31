@@ -1,6 +1,7 @@
 const { defineConfig } = require("cypress");
-const merge = require('mochawesome-merge');
+const merge = require('mochawesome-merge').merge;
 const marge = require('mochawesome-report-generator');
+
 module.exports = defineConfig({
   e2e: {
     video: true,
@@ -24,7 +25,7 @@ module.exports = defineConfig({
 
           console.log("Archivos JSON combinados exitosamente.");
 
-          await marge.create(jsonReport, {
+          await marge.generate(jsonReport, {
             reportDir: 'results',
             saveJson: true,
           });
