@@ -23,28 +23,29 @@ function selectVisibleElement($elements) {
 }
 
 function closeModalIfLimitReached() {
-    const $dialogModal = Cypress.$('div[role="dialog"]');
-    const $errorModal = Cypress.$('div:contains("Ocurrió un error")');
-
+    const $dialogModal = Cypress.$('div[role="dialog"]:visible');
+    const $errorModal = Cypress.$('div:contains("Ocurrió un error"):visible');
+    
     if ($dialogModal.length > 0 && eventsInModal >= modalEventLimit) {
         console.log("Se alcanzó el límite de eventos en el modal, cerrándolo.");
         cy.get('body').click('topRight');
         eventsInModal = 0;
     } else if ($errorModal.length > 0) {
         console.log("Modal de error detectado, cerrándolo.");
-        cy.get('button').contains('OK').click({ force: true });
+        cy.contains('button', 'OK').click({ force: true });
     }
 }
 
 function isModalPresent() {
-    const $dialogModal = Cypress.$('div[role="dialog"]');
+    const $dialogModal = Cypress.$('div[role="dialog"]:visible');
     return $dialogModal.length > 0;
 }
 
 const eventStrategies = {
     clickLink: (inModal) => {
         console.log("Evento: Click en un enlace");
-        const $links = inModal ? Cypress.$('div[role="dialog"] a') : Cypress.$('a');
+        const selector = inModal ? 'div[role="dialog"] a' : 'a';
+        const $links = Cypress.$(selector);
         if ($links.length > 0) {
             const visibleLink = selectVisibleElement($links);
             if (visibleLink) {
@@ -54,44 +55,45 @@ const eventStrategies = {
     },
     fillTextInput: (inModal) => {
         console.log("Evento: Rellenar un campo de texto o email");
-        const $inputs = inModal ? Cypress.$('div[role="dialog"] input[type="text"], div[role="dialog"] input[type="email"]') : Cypress.$('input[type="text"], input[type="email"]');
+        
+        // Selector basado en la presencia del modal
+        const selector = inModal 
+            ? 'div[role="dialog"] input' 
+            : Cypress.$('form input').length > 0 
+                ? 'form input' 
+                : 'input';
+
+        const $inputs = Cypress.$(selector);
         if ($inputs.length > 0) {
             const visibleInput = selectVisibleElement($inputs);
             if (visibleInput) {
                 const inputType = visibleInput.getAttribute('type');
-                if (inputType === 'email') {
-                    const randomEmail = faker.internet.email();
-                    cy.wrap(visibleInput).type(randomEmail, { force: true });
-                } else {
-                    const randomText = faker.lorem.words();
-                    cy.wrap(visibleInput).type(randomText, { force: true });
-                }
+                const inputValue = inputType === 'email' ? faker.internet.email() : faker.lorem.words();
+                cy.wrap(visibleInput).type(inputValue, { force: true });
             }
         }
     },
     selectCombo: (inModal) => {
         console.log("Evento: Interactuar con el elemento <ul> con clase 'nav navbar-nav' o selects");
-
         if (!inModal) {
             const $navUl = Cypress.$('ul.nav.navbar-nav');
             if ($navUl.length > 0) {
                 cy.wrap($navUl).realClick();
             }
-        }
-        if (inModal) {
+        } else {
             const $selectInModal = Cypress.$('div[role="dialog"] select');
             if ($selectInModal.length > 0) {
                 const visibleSelect = selectVisibleElement($selectInModal);
                 if (visibleSelect) {
-                    const optionsLength = visibleSelect.options.length;
-                    cy.wrap(visibleSelect).select(getRandomInt(0, optionsLength));
+                    cy.wrap(visibleSelect).select(getRandomInt(0, visibleSelect.options.length));
                 }
             }
         }
     },
     clickButton: (inModal) => {
         console.log("Evento: Click en un botón");
-        const $buttons = inModal ? Cypress.$('div[role="dialog"] button') : Cypress.$('button');
+        const selector = inModal ? 'div[role="dialog"] button' : 'button';
+        const $buttons = Cypress.$(selector);
         if ($buttons.length > 0) {
             const visibleButton = selectVisibleElement($buttons);
             if (visibleButton) {
@@ -104,7 +106,6 @@ const eventStrategies = {
 function randomEvent(monkeysLeft) {
     if (monkeysLeft > 0) {
         const inModal = isModalPresent();
-
         if (inModal) {
             if (eventsInModal >= modalEventLimit) {
                 closeModalIfLimitReached();
