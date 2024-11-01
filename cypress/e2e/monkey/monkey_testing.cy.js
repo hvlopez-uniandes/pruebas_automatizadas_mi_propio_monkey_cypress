@@ -55,9 +55,7 @@ const eventStrategies = {
     },
     fillTextInput: (inModal) => {
         console.log("Evento: Rellenar un campo de texto o email");
-        
-        // Selector basado en la presencia del modal
-        const selector = inModal 
+                const selector = inModal 
             ? 'div[role="dialog"] input' 
             : Cypress.$('form input').length > 0 
                 ? 'form input' 
